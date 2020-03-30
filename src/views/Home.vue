@@ -1,9 +1,10 @@
 <template>
   <div>
-    <h1 class="text-center text-xl mb-10 text-green-500">
+    <h1 class="text-center text-xl my-10 text-green-500">
       Toys built with Vue
     </h1>
-    <nav class="flex justify-center">
+    <hr />
+    <nav class="flex justify-center my-10">
       <ul class="list-disc list-inside">
         <li class="hover:text-blue-500" v-for="(link, i) in links" :key="i">
           <router-link class="underline" :to="link.url">{{
@@ -12,6 +13,7 @@
         </li>
       </ul>
     </nav>
+    <hr />
   </div>
 </template>
 
