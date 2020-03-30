@@ -25,6 +25,30 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "calculator" */ '../views/Calculator.vue'),
   },
+  {
+    path: '/updating-bars',
+    name: 'UpdatingBars',
+    component: () =>
+      import(
+        /* webpackChunkName: "updating-bars" */ '../views/UpdatingBars.vue'
+      ),
+  },
+  {
+    path: '/colored-pixels',
+    name: 'ColoredPixels',
+    component: () =>
+      import(
+        /* webpackChunkName: "colored-pixels" */ '../views/ColoredPixels.vue'
+      ),
+  },
+  {
+    path: '/colorblock-webgl',
+    name: 'ColorBlockWebgl',
+    component: () =>
+      import(
+        /* webpackChunkName: "colorblock-webgl" */ '../views/ColorBlockWebgl.vue'
+      ),
+  },
 ]
 
 const router = new VueRouter({

@@ -27,6 +27,12 @@ export default {
       links: [
         { url: 'game-of-life', text: 'Game of Life' },
         { url: 'calculator', text: 'macOS Calculator' },
+        { url: 'updating-bars', text: 'Updating Bars' },
+        {
+          url: 'colored-pixels',
+          text: 'Colored Pixels via SVG (updating and quite slow)',
+        },
+        { url: 'colorblock-webgl', text: 'Basic Block with color via WebGL' },
       ],
     }
   },

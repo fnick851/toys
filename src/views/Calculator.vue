@@ -1,7 +1,7 @@
 <template>
   <div style="border: none;">
     <h1 class="text-orange-500 py-10">
-      a crude implementation of macOS calculator
+      A crude implementation of the macOS calculator
     </h1>
     <div class="calculator-body">
       <!-- fisrt row -->
