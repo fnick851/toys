@@ -24,7 +24,10 @@ export default {
   name: 'Home',
   data() {
     return {
-      links: [{ url: 'game-of-life', text: 'Game of Life' }],
+      links: [
+        { url: 'game-of-life', text: 'Game of Life' },
+        { url: 'calculator', text: 'macOS Calculator' },
+      ],
     }
   },
 }
