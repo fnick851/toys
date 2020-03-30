@@ -70,57 +70,6 @@ import _ from 'lodash'
 
 import Link from '../components/icons/Link.vue'
 
-// GAME RULES
-// Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-// Any live cell with two or three live neighbours lives on to the next generation.
-// Any live cell with more than three live neighbours dies, as if by overcrowding.
-// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-const applyRules = (grid, row, col, rows, cols, clone) => {
-  const numNeighbors = countNeighbors(grid, row, col, rows, cols)
-  if (grid[row][col] === 1) {
-    if (numNeighbors < 2) {
-      clone[row][col] = 0
-    } else if (numNeighbors === 2 || numNeighbors === 3) {
-      clone[row][col] = 1
-    } else if (numNeighbors > 3) {
-      clone[row][col] = 0
-    }
-  } else if (grid[row][col] === 0) {
-    if (numNeighbors === 3) {
-      clone[row][col] = 1
-    }
-  }
-}
-
-const countNeighbors = (grid, row, col, rows, cols) => {
-  let count = 0
-  if (row - 1 >= 0) {
-    if (grid[row - 1][col] === 1) count++
-  }
-  if (row - 1 >= 0 && col - 1 >= 0) {
-    if (grid[row - 1][col - 1] === 1) count++
-  }
-  if (row - 1 >= 0 && col + 1 < cols) {
-    if (grid[row - 1][col + 1] === 1) count++
-  }
-  if (col - 1 >= 0) {
-    if (grid[row][col - 1] === 1) count++
-  }
-  if (col + 1 < cols) {
-    if (grid[row][col + 1] === 1) count++
-  }
-  if (row + 1 < rows) {
-    if (grid[row + 1][col] === 1) count++
-  }
-  if (row + 1 < rows && col - 1 >= 0) {
-    if (grid[row + 1][col - 1] === 1) count++
-  }
-  if (row + 1 < rows && col + 1 < cols) {
-    if (grid[row + 1][col + 1] === 1) count++
-  }
-  return count
-}
-
 export default {
   name: 'GameOfLife',
   components: { Link },
@@ -156,13 +105,13 @@ export default {
   },
   methods: {
     gameStart() {
-      for (let i = 0; i < this.rows; i++) {
-        if (!this.game[i]) this.game[i] = []
-        for (let j = 0; j < this.cols; j++) {
-          this.game[i][j] ? null : this.$set(this.game[i], j, 0)
-        }
-      }
       if (this.started === false && this.paused === false) {
+        for (let i = 0; i < this.rows; i++) {
+          if (!this.game[i]) this.game[i] = []
+          for (let j = 0; j < this.cols; j++) {
+            this.game[i][j] ? null : this.$set(this.game[i], j, 0)
+          }
+        }
         this.started = true
         this.startButtonText = 'Pause'
         this.play()
@@ -186,21 +135,21 @@ export default {
         }
         this.game = clone
       }
-      if (this.started) {
-        this.timer = setInterval(calc)
-      }
+      this.timer = setInterval(calc, 200)
     },
     gameClear() {
-      this.game = []
+      clearInterval(this.timer)
+      this.startButtonText = 'Start'
       this.started = false
       this.paused = false
-      this.startButtonText = 'Start'
-      clearInterval(this.timer)
+      this.game = []
+      for (let i = 0; i < this.rows; i++) {
+        this.$set(this.game, i, [])
+      }
     },
     randomGame() {
       this.gameClear()
       for (let i = 0; i < this.rows; i++) {
-        this.$set(this.game, i, [])
         for (let j = 0; j < this.cols; j++) {
           if (Math.random() < 0.1) {
             this.$set(this.game[i], j, 1)
@@ -221,5 +170,56 @@ export default {
       }
     },
   },
+}
+
+// GAME RULES
+// Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+// Any live cell with two or three live neighbours lives on to the next generation.
+// Any live cell with more than three live neighbours dies, as if by overcrowding.
+// Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+function applyRules(grid, row, col, rows, cols, gridClone) {
+  const numNeighbors = countNeighbors(grid, row, col, rows, cols)
+  if (grid[row][col] === 1) {
+    if (numNeighbors < 2) {
+      gridClone[row][col] = 0
+    } else if (numNeighbors === 2 || numNeighbors === 3) {
+      gridClone[row][col] = 1
+    } else if (numNeighbors > 3) {
+      gridClone[row][col] = 0
+    }
+  } else if (grid[row][col] === 0) {
+    if (numNeighbors === 3) {
+      gridClone[row][col] = 1
+    }
+  }
+}
+
+function countNeighbors(grid, row, col, rows, cols) {
+  let count = 0
+  if (row - 1 >= 0) {
+    if (grid[row - 1][col] === 1) count++
+  }
+  if (row - 1 >= 0 && col - 1 >= 0) {
+    if (grid[row - 1][col - 1] === 1) count++
+  }
+  if (row - 1 >= 0 && col + 1 < cols) {
+    if (grid[row - 1][col + 1] === 1) count++
+  }
+  if (col - 1 >= 0) {
+    if (grid[row][col - 1] === 1) count++
+  }
+  if (col + 1 < cols) {
+    if (grid[row][col + 1] === 1) count++
+  }
+  if (row + 1 < rows) {
+    if (grid[row + 1][col] === 1) count++
+  }
+  if (row + 1 < rows && col - 1 >= 0) {
+    if (grid[row + 1][col - 1] === 1) count++
+  }
+  if (row + 1 < rows && col + 1 < cols) {
+    if (grid[row + 1][col + 1] === 1) count++
+  }
+  return count
 }
 </script>
