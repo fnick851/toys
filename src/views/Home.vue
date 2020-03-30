@@ -30,7 +30,7 @@ export default {
         { url: 'updating-bars', text: 'Updating Bars' },
         {
           url: 'colored-pixels',
-          text: 'Colored Pixels via SVG (updating and quite slow)',
+          text: 'Colored Pixels via SVG (quite slow)',
         },
         { url: 'colorblock-webgl', text: 'Basic Block with Color via WebGL' },
       ],
