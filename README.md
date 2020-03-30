@@ -2,8 +2,13 @@
 
 [https://fnick851.github.io/toys/](https://fnick851.github.io/toys/)
 
+What's Inside:
+
 - Game of Life
 - macOS Calculator
+- Self-updating bars
+- Colored pixels via SVG
+- Basic color shape via WebGL
 
 ## Project setup
 
