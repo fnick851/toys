@@ -32,7 +32,7 @@ export default {
           url: 'colored-pixels',
           text: 'Colored Pixels via SVG (updating and quite slow)',
         },
-        { url: 'colorblock-webgl', text: 'Basic Block with color via WebGL' },
+        { url: 'colorblock-webgl', text: 'Basic Block with Color via WebGL' },
       ],
     }
   },
