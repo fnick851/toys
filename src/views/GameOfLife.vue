@@ -100,7 +100,13 @@ export default {
       this.startButtonText = 'Start'
     },
     randomGame() {
-      console.log('random game')
+      this.gameClear()
+      for (let i = 0; i < this.rows; i++) {
+        this.game[i] = []
+        for (let j = 0; j < this.cols; j++) {
+          this.game[i][j] = Math.random() < 0.005 ? 1 : 0
+        }
+      }
     },
     toggleCell(i, j) {
       if (!this.game[i]) {
