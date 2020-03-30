@@ -1,5 +1,7 @@
 # Toys
 
+[https://fnick851.github.io/toys/](https://fnick851.github.io/toys/)
+
 - Game of Life
 
 ## Project setup
