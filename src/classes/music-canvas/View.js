@@ -9,31 +9,29 @@ class View {
   }
 
   handleClick(event) {
-    const view = this
     const x = event.offsetX
     const y = event.offsetY
-    const pos = view.clicks.push({ x: x, y: y, radius: 0 })
-    view.audio.play(x % 10)
-    setInterval(function() {
-      view.clicks[pos - 1].radius = 0
-      view.audio.play(x % 10)
-    }, view.loopRate)
+    const pos = this.clicks.push({ x: x, y: y, radius: 0 })
+    this.audio.play(x % 10)
+    setInterval(() => {
+      this.clicks[pos - 1].radius = 0
+      this.audio.play(x % 10)
+    }, this.loopRate)
   }
 
   updateDisplay() {
-    const view = this
-    const context = view.canvas.getContext('2d')
-    context.clearRect(0, 0, view.canvas.width, view.canvas.height)
+    const context = this.canvas.getContext('2d')
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     context.fillStyle = 'black'
-    context.fillRect(0, 0, view.canvas.width, view.canvas.height)
-    for (let i = 0; i < view.clicks.length; i++) {
-      const circle = view.clicks[i]
-      if (circle.radius > view.maxRadius) continue
+    context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    for (let i = 0; i < this.clicks.length; i++) {
+      const circle = this.clicks[i]
+      if (circle.radius > this.maxRadius) continue
       circle.radius += 1
       let alpha = 0.7
-      if (circle.radius > view.maxRadius - 15)
-        alpha = (view.maxRadius - circle.radius) / 10
-      view.drawCircle(context, circle.x, circle.y, circle.radius, alpha)
+      if (circle.radius > this.maxRadius - 15)
+        alpha = (this.maxRadius - circle.radius) / 10
+      this.drawCircle(context, circle.x, circle.y, circle.radius, alpha)
     }
   }
 

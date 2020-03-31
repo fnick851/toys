@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvas"></canvas>
+  <canvas ref="canvas" @click="playNote($event)"></canvas>
 </template>
 
 <script>
@@ -9,29 +9,15 @@ import View from '../classes/music-canvas/View.js'
 
 export default {
   name: 'MusicCanvas',
-  mounted() {
-    const setCanvasSize = () => {
-      this.$refs.canvas.width = window.innerWidth
-      this.$refs.canvas.height = window.innerHeight
+  data() {
+    return {
+      audio: new Audio(),
+      view: { handleClick: () => {} },
     }
-    setCanvasSize()
-    window.onresize = setCanvasSize
-
-    const audio = new Audio()
-
-    const finishedLoading = bufferList => {
-      audio.init(bufferList)
-      const view = new View(this.$refs.canvas, audio)
-      this.$refs.canvas.addEventListener(
-        'mousedown',
-        view.handleClick.bind(view),
-        false,
-      )
-      setInterval(view.updateDisplay.bind(view), view.frameRate)
-    }
-
-    const bufferLoader = new BufferLoader(
-      audio.audioContext,
+  },
+  created() {
+    new BufferLoader(
+      this.audio.audioContext,
       [
         'A4.mp3',
         'A5.mp3',
@@ -44,9 +30,35 @@ export default {
         'G4.mp3',
         'G5.mp3',
       ],
-      finishedLoading,
-    )
-    bufferLoader.load()
+      bufferList => {
+        this.audio.init(bufferList)
+        this.view = new View(this.$refs.canvas, this.audio)
+      },
+    ).load()
+  },
+  mounted() {
+    const setCanvasSize = () => {
+      this.$refs.canvas.width = window.innerWidth
+      this.$refs.canvas.height = window.innerHeight
+    }
+    setCanvasSize()
+    window.onresize = setCanvasSize
+  },
+  methods: {
+    playNote(e) {
+      this.view.handleClick.bind(this.view)
+      this.view.handleClick(e)
+    },
+  },
+  watch: {
+    view: function(newView) {
+      if (newView.updateDisplay && newView.frameRate) {
+        setInterval(
+          this.view.updateDisplay.bind(this.view),
+          this.view.frameRate,
+        )
+      }
+    },
   },
 }
 </script>
