@@ -16,13 +16,13 @@
     <!-- board -->
     <div class="flex justify-center my-5">
       <table>
-        <tr v-for="(row, i) in board" :key="i">
+        <tr v-for="r in rows" :key="r">
           <td
             class="w-3 h-3 border border-solid border-gray-400 cursor-pointer"
-            v-for="(cell, j) in row"
-            :key="j"
-            @click="toggleCell(i, j)"
-            :class="cell === 0 ? '' : 'bg-green-500'"
+            v-for="c in cols"
+            :key="c"
+            @click="toggleCell(r - 1, c - 1)"
+            :class="game[r - 1][c - 1] ? 'bg-green-500' : null"
           ></td>
         </tr>
       </table>
@@ -33,19 +33,23 @@
         class="w-16 border border-gray-300 rounded mr-1 text-center"
         placeholder="rows"
         v-model.number="rows"
+        :disabled="controlDisabled"
       />
       x
       <input
         class="w-16 border border-gray-400 rounded ml-1 text-center"
         placeholder="columns"
         v-model.number="cols"
+        :disabled="controlDisabled"
       />
       <button
         class="ml-2 bg-transparent hover:bg-green-500 text-green-600 hover:text-white px-2 border border-green-500 hover:border-transparent rounded"
         @click="gameStart()"
-        :disabled="startDisabled"
-        :class="startDisabled ? 'opacity-50 cursor-not-allowed' : null"
-        :title="startDisabled ? 'more than 2500 cells will be lagging' : null"
+        :disabled="controlDisabled"
+        :class="controlDisabled ? 'opacity-50 cursor-not-allowed' : null"
+        :title="
+          controlDisabled ? `more than ${limit} cells will be lagging` : null
+        "
       >
         {{ startButtonText }}
       </button>
@@ -77,6 +81,7 @@ export default {
     return {
       rows: 50,
       cols: 50,
+      limit: 3600,
       started: false,
       paused: false,
       startButtonText: 'Start',
@@ -84,34 +89,32 @@ export default {
       timer: null,
     }
   },
+  created() {
+    this.game = new Array(this.rows).fill(new Array(this.cols))
+    this.$watch(
+      vm => [vm.rows, vm.cols],
+      () => (this.game = new Array(this.rows).fill(new Array(this.cols))),
+      {
+        immediate: true,
+      },
+    )
+  },
   computed: {
-    board() {
-      const board = []
-      for (let i = 0; i < this.rows; i++) {
-        board[i] = []
-        for (let j = 0; j < this.cols; j++) {
-          if (this.game[i]) {
-            board[i][j] = this.game[i][j] ? 1 : 0
-          } else {
-            board[i][j] = 0
-          }
-        }
-      }
-      return board
-    },
-    startDisabled() {
-      return this.rows * this.cols > 2500
+    controlDisabled() {
+      return this.rows * this.cols > this.limit
     },
   },
   methods: {
     gameStart() {
       if (this.started === false && this.paused === false) {
+        const tempGame = _.cloneDeep(this.game)
         for (let i = 0; i < this.rows; i++) {
-          if (!this.game[i]) this.game[i] = []
+          if (!tempGame[i]) tempGame[i] = []
           for (let j = 0; j < this.cols; j++) {
-            this.game[i][j] ? null : this.$set(this.game[i], j, 0)
+            tempGame[i][j] ? null : (tempGame[i][j] = 0)
           }
         }
+        this.game = tempGame
         this.started = true
         this.startButtonText = 'Pause'
         this.play()
@@ -135,39 +138,35 @@ export default {
         }
         this.game = clone
       }
-      this.timer = setInterval(calc, 200)
+      this.timer = setInterval(calc, 150)
     },
     gameClear() {
       clearInterval(this.timer)
       this.startButtonText = 'Start'
       this.started = false
       this.paused = false
-      this.game = []
-      for (let i = 0; i < this.rows; i++) {
-        this.$set(this.game, i, [])
-      }
+      this.game = new Array(this.rows).fill(new Array(this.cols))
     },
     randomGame() {
       this.gameClear()
+      const tempGame = []
       for (let i = 0; i < this.rows; i++) {
+        tempGame[i] = []
         for (let j = 0; j < this.cols; j++) {
           if (Math.random() < 0.1) {
-            this.$set(this.game[i], j, 1)
+            tempGame[i][j] = 1
           } else {
-            this.$set(this.game[i], j, 0)
+            tempGame[i][j] = 0
           }
         }
       }
+      this.game = tempGame
     },
     toggleCell(i, j) {
-      if (!this.game[i]) {
-        this.$set(this.game, i, [])
-      }
-      if (this.game[i][j] === 1) {
-        this.$set(this.game[i], j, 0)
-      } else {
-        this.$set(this.game[i], j, 1)
-      }
+      const tempGame = _.cloneDeep(this.game)
+      if (!tempGame[i]) tempGame[i] = []
+      tempGame[i][j] ? (tempGame[i][j] = 0) : (tempGame[i][j] = 1)
+      this.game = tempGame
     },
   },
 }
