@@ -9,6 +9,7 @@ What's Inside:
 - Self-updating bars
 - Colored pixels via SVG
 - Basic color shape via WebGL
+- Music Canvas
 
 ## Project setup
 

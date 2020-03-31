@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import { cloneDeep } from 'lodash'
 
 import Link from '../components/icons/Link.vue'
 
@@ -112,7 +112,7 @@ export default {
   methods: {
     gameStart() {
       if (this.started === false && this.paused === false) {
-        const tempGame = _.cloneDeep(this.game)
+        const tempGame = cloneDeep(this.game)
         for (let i = 0; i < this.rows; i++) {
           if (!tempGame[i]) tempGame[i] = []
           for (let j = 0; j < this.cols; j++) {
@@ -135,7 +135,7 @@ export default {
     },
     play() {
       const calc = () => {
-        const clone = _.cloneDeep(this.game)
+        const clone = cloneDeep(this.game)
         for (let i = 0; i < this.rows; i++) {
           for (let j = 0; j < this.cols; j++) {
             applyRules(this.game, i, j, this.rows, this.cols, clone)
@@ -170,7 +170,7 @@ export default {
       this.game = tempGame
     },
     toggleCell(i, j) {
-      const tempGame = _.cloneDeep(this.game)
+      const tempGame = cloneDeep(this.game)
       tempGame[i][j] ? (tempGame[i][j] = 0) : (tempGame[i][j] = 1)
       this.game = tempGame
     },

@@ -33,6 +33,7 @@ export default {
           text: 'Colored Pixels via SVG (quite slow)',
         },
         { url: 'colorblock-webgl', text: 'Basic Block with Color via WebGL' },
+        { url: 'music-canvas', text: 'Music Canvas' },
       ],
     }
   },

@@ -49,6 +49,12 @@ const routes = [
         /* webpackChunkName: "colorblock-webgl" */ '../views/ColorBlockWebgl.vue'
       ),
   },
+  {
+    path: '/music-canvas',
+    name: 'MusicCanvas',
+    component: () =>
+      import(/* webpackChunkName: "music-canvas" */ '../views/MusicCanvas.vue'),
+  },
 ]
 
 const router = new VueRouter({
