@@ -90,10 +90,15 @@ export default {
     }
   },
   created() {
-    this.game = new Array(this.rows).fill(new Array(this.cols))
+    this.game = Array.from({ length: this.rows }, () =>
+      Array(this.cols).fill(0),
+    )
     this.$watch(
       vm => [vm.rows, vm.cols],
-      () => (this.game = new Array(this.rows).fill(new Array(this.cols))),
+      () =>
+        (this.game = Array.from({ length: this.rows }, () =>
+          Array(this.cols).fill(0),
+        )),
       {
         immediate: true,
       },
@@ -145,7 +150,9 @@ export default {
       this.startButtonText = 'Start'
       this.started = false
       this.paused = false
-      this.game = new Array(this.rows).fill(new Array(this.cols))
+      this.game = Array.from({ length: this.rows }, () =>
+        Array(this.cols).fill(0),
+      )
     },
     randomGame() {
       this.gameClear()
@@ -164,7 +171,6 @@ export default {
     },
     toggleCell(i, j) {
       const tempGame = _.cloneDeep(this.game)
-      if (!tempGame[i]) tempGame[i] = []
       tempGame[i][j] ? (tempGame[i][j] = 0) : (tempGame[i][j] = 1)
       this.game = tempGame
     },
