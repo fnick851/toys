@@ -6,6 +6,7 @@ class View {
     this.frameRate = 1000 / 30
     this.loopRate = 4000
     this.maxRadius = 80
+    this.audioLoop = []
   }
 
   handleClick(event) {
@@ -13,10 +14,12 @@ class View {
     const y = event.offsetY
     const pos = this.clicks.push({ x: x, y: y, radius: 0 })
     this.audio.play(x % 10)
-    setInterval(() => {
-      this.clicks[pos - 1].radius = 0
-      this.audio.play(x % 10)
-    }, this.loopRate)
+    this.audioLoop.push(
+      setInterval(() => {
+        this.clicks[pos - 1].radius = 0
+        this.audio.play(x % 10)
+      }, this.loopRate),
+    )
   }
 
   updateDisplay() {

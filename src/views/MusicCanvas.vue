@@ -13,6 +13,7 @@ export default {
     return {
       audio: new Audio(),
       view: { handleClick: () => {} },
+      displayLoop: null,
     }
   },
   created() {
@@ -33,6 +34,10 @@ export default {
       bufferList => {
         this.audio.init(bufferList)
         this.view = new View(this.$refs.canvas, this.audio)
+        this.displayLoop = setInterval(
+          this.view.updateDisplay.bind(this.view),
+          this.view.frameRate,
+        )
       },
     ).load()
   },
@@ -50,15 +55,9 @@ export default {
       this.view.handleClick(e)
     },
   },
-  watch: {
-    view: function(newView) {
-      if (newView.updateDisplay && newView.frameRate) {
-        setInterval(
-          this.view.updateDisplay.bind(this.view),
-          this.view.frameRate,
-        )
-      }
-    },
+  beforeDestroy() {
+    this.view.audioLoop.forEach(audioLoop => clearInterval(audioLoop))
+    clearInterval(this.displayLoop)
   },
 }
 </script>
