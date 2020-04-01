@@ -9,14 +9,14 @@
         class="w-64 h-64 border border-grey-100 border-solid"
       >
         <template v-for="(item, index) in vizData">
-          <text :key="index + '_text'" x="20" :y="(index + 1) * 30">
+          <text :key="index + 'text'" x="20" :y="(index + 1) * 30">
             {{ item.name }}
           </text>
           <rect
-            :key="index + '_rect'"
+            :key="index + 'rect'"
             x="65"
             :y="(index + 1) * 30 - 14"
-            :width="item.data * 200"
+            :width="item.data * 250"
             height="16"
             :fill="getBarColor()"
           />
@@ -49,10 +49,9 @@
 <script>
 import color from 'color'
 
+const rgb = () => Math.round(255 * Math.random())
+
 export default {
-  props: {
-    msg: String,
-  },
   data() {
     return {
       vizData: [
@@ -71,21 +70,14 @@ export default {
     }
   },
   mounted() {
-    const vm = this
     setInterval(() => {
-      for (let i = 0; i < vm.vizData.length - 1; i++) {
-        vm.vizData[i].data = Math.random()
-      }
+      for (let i = 0; i < this.vizData.length - 1; i++)
+        this.vizData[i].data = Math.random()
     }, 1000)
   },
   methods: {
     getBarColor() {
-      function getRgbSingleValue() {
-        return Math.round(255 * Math.random())
-      }
-      return color(
-        `rgb(${getRgbSingleValue()}, ${getRgbSingleValue()}, ${getRgbSingleValue()})`,
-      )
+      return color(`rgb(${rgb()}, ${rgb()}, ${rgb()})`)
         .rgb()
         .string()
     },
