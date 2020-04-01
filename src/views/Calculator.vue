@@ -346,6 +346,11 @@ span {
 .lightButton {
   background-color: #818283;
 }
+.darkButton,
+.lightButton,
+.orangeButton {
+  cursor: pointer;
+}
 .darkButton:active {
   background-color: #606161;
 }

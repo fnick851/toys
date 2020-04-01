@@ -1,5 +1,9 @@
 <template>
-  <canvas ref="canvas" @click="view.handleClick($event)"></canvas>
+  <canvas
+    ref="canvas"
+    @click="view.handleClick($event)"
+    class="cursor-pointer"
+  ></canvas>
 </template>
 
 <script>
