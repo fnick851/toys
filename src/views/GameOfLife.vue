@@ -85,7 +85,7 @@ export default {
       started: false,
       paused: false,
       startButtonText: 'Start',
-      game: [],
+      game: null,
       timer: null,
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvas" @click="playNote($event)"></canvas>
+  <canvas ref="canvas" @click="view.handleClick($event)"></canvas>
 </template>
 
 <script>
@@ -12,7 +12,7 @@ export default {
   data() {
     return {
       audio: new Audio(),
-      view: { handleClick: () => {} },
+      view: null,
       displayLoop: null,
     }
   },
@@ -35,7 +35,7 @@ export default {
         this.audio.init(bufferList)
         this.view = new View(this.$refs.canvas, this.audio)
         this.displayLoop = setInterval(
-          this.view.updateDisplay.bind(this.view),
+          this.view.updateDisplay,
           this.view.frameRate,
         )
       },
@@ -48,12 +48,6 @@ export default {
     }
     setCanvasSize()
     window.onresize = setCanvasSize
-  },
-  methods: {
-    playNote(e) {
-      this.view.handleClick.bind(this.view)
-      this.view.handleClick(e)
-    },
   },
   beforeDestroy() {
     this.view.audioLoop.forEach(audioLoop => clearInterval(audioLoop))

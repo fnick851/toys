@@ -7,6 +7,8 @@ class View {
     this.loopRate = 4000
     this.maxRadius = 80
     this.audioLoop = []
+    this.handleClick = this.handleClick.bind(this)
+    this.updateDisplay = this.updateDisplay.bind(this)
   }
 
   handleClick(event) {
