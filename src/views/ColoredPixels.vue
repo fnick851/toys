@@ -57,7 +57,7 @@ export default {
         }
       }
       this.squareColors = tempColors
-      setTimeout(this.genColors, 2000)
+      setTimeout(genColors, 2000)
     }
     getNumOfRowColumn()
     genColors()
