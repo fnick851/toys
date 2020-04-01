@@ -56,6 +56,7 @@ export default {
   beforeDestroy() {
     this.view.audioLoop.forEach(audioLoop => clearInterval(audioLoop))
     clearInterval(this.displayLoop)
+    window.onresize = null
   },
 }
 </script>

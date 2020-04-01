@@ -42,16 +42,11 @@ export default {
     }
   },
   mounted() {
-    window.onresize = this.getNumOfRowColumn()
-    this.genColors()
-  },
-  methods: {
-    getNumOfRowColumn() {
+    const getNumOfRowColumn = () => {
       this.numColumns = Math.ceil(this.$refs.root.offsetWidth / this.squareEdge)
       this.numRows = Math.ceil(this.$refs.root.offsetHeight / this.squareEdge)
-      return this.getNumOfRowColumn
-    },
-    genColors() {
+    }
+    const genColors = () => {
       const tempColors = []
       for (let row = 0; row < this.numRows; row++) {
         tempColors[row] = []
@@ -63,7 +58,16 @@ export default {
       }
       this.squareColors = tempColors
       setTimeout(this.genColors, 2000)
-    },
+    }
+    getNumOfRowColumn()
+    genColors()
+    window.onresize = () => {
+      getNumOfRowColumn()
+      genColors()
+    }
+  },
+  beforeDestroy() {
+    window.onresize = null
   },
 }
 </script>
