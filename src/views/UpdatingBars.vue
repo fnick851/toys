@@ -5,18 +5,18 @@
     </h1>
     <div class="flex justify-center">
       <svg
-        viewBox="0 0 350 350"
-        class="w-64 h-64 border border-grey-100 border-solid"
+        viewBox="0 0 846 846"
+        class="w-1/3 h-1/3 border border-grey-100 border-solid"
       >
         <template v-for="(item, index) in vizData">
-          <text :key="index + 'text'" x="20" :y="(index + 1) * 30">
+          <text :key="index + 'text'" x="15" :y="(index + 1) * 71">
             {{ item.name }}
           </text>
           <rect
             :key="index + 'rect'"
             x="65"
-            :y="(index + 1) * 30 - 14"
-            :width="item.data * 250"
+            :y="(index + 1) * 71 - 14"
+            :width="item.data * 750"
             height="16"
             :fill="getBarColor()"
           />
