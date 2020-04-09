@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-10">
     <h1 class="text-center text-purple-500 text-xl my-10">
       Updating Bars via Vue Reactivity
     </h1>
