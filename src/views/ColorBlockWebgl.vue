@@ -11,11 +11,12 @@ export default {
   mounted() {
     main(this)
 
+    let squareRotation = 0.0
+
     //
     // Start here
     //
     function main(vm) {
-      console.log(vm.$refs.canvas)
       const gl = vm.$refs.canvas.getContext('webgl')
 
       // If we don't have a GL context, give up now
@@ -83,8 +84,19 @@ export default {
       // objects we'll be drawing.
       const buffers = initBuffers(gl)
 
-      // Draw the scene
-      drawScene(gl, programInfo, buffers)
+      let then = 0
+
+      // Draw the scene repeatedly
+      function render(now) {
+        now *= 0.001 // convert to seconds
+        const deltaTime = now - then
+        then = now
+
+        drawScene(gl, programInfo, buffers, deltaTime)
+
+        requestAnimationFrame(render)
+      }
+      requestAnimationFrame(render)
     }
 
     //
@@ -119,7 +131,7 @@ export default {
 
       // Now set up the colors for the vertices
 
-      var colors = [
+      const colors = [
         1.0,
         1.0,
         1.0,
@@ -151,7 +163,7 @@ export default {
     //
     // Draw the scene.
     //
-    function drawScene(gl, programInfo, buffers) {
+    function drawScene(gl, programInfo, buffers, deltaTime) {
       gl.clearColor(0.0, 0.0, 0.0, 1.0) // Clear to black, fully opaque
       gl.clearDepth(1.0) // Clear everything
       gl.enable(gl.DEPTH_TEST) // Enable depth testing
@@ -190,6 +202,12 @@ export default {
         modelViewMatrix, // matrix to translate
         [-0.0, 0.0, -6.0],
       ) // amount to translate
+      mat4.rotate(
+        modelViewMatrix, // destination matrix
+        modelViewMatrix, // matrix to rotate
+        squareRotation, // amount to rotate in radians
+        [0, 0, 1],
+      ) // axis to rotate around
 
       // Tell WebGL how to pull out the positions from the position
       // buffer into the vertexPosition attribute
@@ -253,6 +271,10 @@ export default {
         const vertexCount = 4
         gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount)
       }
+
+      // Update the rotation for the next draw
+
+      squareRotation += deltaTime
     }
 
     //
