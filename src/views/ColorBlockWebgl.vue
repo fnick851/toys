@@ -15,7 +15,6 @@ export default {
   },
   methods: {
     renderCube() {
-      console.log('render')
       let cubeRotation = 0.0
       // will set to true when video can be copied to texture
       let copyVideo = false
