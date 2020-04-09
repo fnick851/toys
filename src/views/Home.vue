@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-center text-xl my-10 text-green-500">
-      Toys built with Vue
+      little web toys
     </h1>
     <hr />
     <nav class="flex justify-center my-10">
